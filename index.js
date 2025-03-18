@@ -2,7 +2,6 @@ const helper = require("./helper.js");
 
 const core = require("@actions/core");
 const github = require("@actions/github");
-const https = require("https");
 
 async function run() {
   try {
@@ -26,43 +25,48 @@ async function run() {
       },
     };
 
-    var options = {
-      host: "redmine.42mate.com",
-      path: `/issues/9196.json`,
+    const res = await fetch("https://redmine.42mate.com/issues/9196.json", {
       method: "PUT",
-    };
-
-    console.log("before request");
-    var req = https.request(options, function (res) {
-      if (
-        res.statusCode !== 200 &&
-        res.statusCode !== 201 &&
-        res.statusCode !== 204
-      ) {
-        console.log(res.statusCode, res.headers, res.req.headers);
-        throw new Error(res.statusCode);
-      }
-      console.log(res.statusCode);
-      process.exitCode = 0;
+      headers: {
+        "X-redmine-api-key": "ec234c37b836236e0de1d91de607b301ed1eb370",
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(params),
     });
 
-    req.setHeader(
-      "X-Redmine-API-key",
-      "ec234c37b836236e0de1d91de607b301ed1eb370",
-    );
-    req.setHeader("Content-type", "application/json");
-    req.on("error", function (err) {
-      console.log("before ");
-      console.log(err);
-      throw err;
-    });
+    console.log(res);
 
-    var body = JSON.stringify(params);
+    // console.log("before request");
+    // var req = https.request(options, function (res) {
+    //   if (
+    //     res.statusCode !== 200 &&
+    //     res.statusCode !== 201 &&
+    //     res.statusCode !== 204
+    //   ) {
+    //     console.log(res.statusCode, res.headers, res.req.headers);
+    //     throw new Error(res.statusCode);
+    //   }
+    //   console.log(res.statusCode);
+    //   process.exitCode = 0;
+    // });
 
-    req.write(body);
-    console.log(req.getHeaders());
-    console.log("pushing the message");
-    req.end();
+    // req.setHeader(
+    //   "X-Redmine-API-key",
+    //   "ec234c37b836236e0de1d91de607b301ed1eb370",
+    // );
+    // req.setHeader("Content-type", "application/json");
+    // req.on("error", function (err) {
+    //   console.log("before ");
+    //   console.log(err);
+    //   throw err;
+    // });
+
+    // var body = JSON.stringify(params);
+
+    // req.write(body);
+    // console.log(req.getHeaders());
+    // console.log("pushing the message");
+    // req.end();
   } catch (error) {
     console.error("error: " + error);
     process.exitCode = 1;
