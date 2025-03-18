@@ -30,17 +30,13 @@ async function run() {
     };
 
     var options = {
-      host: hostname,
+      host: "https://redmine.42mate.com",
       path: `/issues/${issueNumber.pop()}.json`,
       method: method,
       headers: {
         "X-Redmine-API-Key": core.getInput("redmine_apikey"),
       },
     };
-
-    console.log(options);
-
-    console.log("issue", issueNumber);
 
     var req = http.request(options, function (res) {
       if (
