@@ -2,7 +2,7 @@ const helper = require("./helper.js");
 
 const core = require("@actions/core");
 const github = require("@actions/github");
-const http = require("http");
+const https = require("https");
 
 async function run() {
   try {
@@ -36,7 +36,7 @@ async function run() {
       },
     };
 
-    var req = http.request(options, function (res) {
+    var req = https.request(options, function (res) {
       if (
         res.statusCode != 200 &&
         res.statusCode != 201 &&
