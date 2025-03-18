@@ -10250,7 +10250,7 @@ async function run() {
 
     const params = {
       issue: {
-        notes: pr.data.comments,
+        notes: pr.data.body,
       },
     };
 
