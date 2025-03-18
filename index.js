@@ -35,7 +35,7 @@ async function run() {
         "Content-type": "application/json",
       },
     };
-
+    console.log("before request");
     var req = https.request(options, function (res) {
       if (
         res.statusCode !== 200 &&
@@ -46,14 +46,17 @@ async function run() {
         throw new Error(res.statusCode);
       }
       console.log(res.statusCode);
+      process.exitCode = 0;
     });
 
     req.on("error", function (err) {
+      console.log("before ");
       console.log(err);
       throw err;
     });
 
     var body = JSON.stringify(params);
+    console.log("writing the body");
     req.write(body);
     console.log("pushing the message");
     req.end();
