@@ -21,52 +21,18 @@ async function run() {
 
     const params = {
       issue: {
-        notes: pr.data.body,
+        notes: pr.data.body + "\n" + pr.url,
       },
     };
 
-    const res = await fetch("https://redmine.42mate.com/issues/9196.json", {
+    const res = await fetch(`${hostname}/issues/${issueNumber.pop()}.json`, {
       method: "PUT",
       headers: {
-        "X-redmine-api-key": "ec234c37b836236e0de1d91de607b301ed1eb370",
+        "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
         "Content-type": "application/json",
       },
       body: JSON.stringify(params),
     });
-
-    console.log(res);
-
-    // console.log("before request");
-    // var req = https.request(options, function (res) {
-    //   if (
-    //     res.statusCode !== 200 &&
-    //     res.statusCode !== 201 &&
-    //     res.statusCode !== 204
-    //   ) {
-    //     console.log(res.statusCode, res.headers, res.req.headers);
-    //     throw new Error(res.statusCode);
-    //   }
-    //   console.log(res.statusCode);
-    //   process.exitCode = 0;
-    // });
-
-    // req.setHeader(
-    //   "X-Redmine-API-key",
-    //   "ec234c37b836236e0de1d91de607b301ed1eb370",
-    // );
-    // req.setHeader("Content-type", "application/json");
-    // req.on("error", function (err) {
-    //   console.log("before ");
-    //   console.log(err);
-    //   throw err;
-    // });
-
-    // var body = JSON.stringify(params);
-
-    // req.write(body);
-    // console.log(req.getHeaders());
-    // console.log("pushing the message");
-    // req.end();
   } catch (error) {
     console.error("error: " + error);
     process.exitCode = 1;
