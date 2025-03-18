@@ -42,7 +42,7 @@ async function run() {
         res.statusCode !== 201 &&
         res.statusCode !== 204
       ) {
-        console.log(res.statusCode);
+        console.log(res);
         throw new Error("error");
       }
 
