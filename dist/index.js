@@ -10293,7 +10293,7 @@ async function run() {
     });
 
     if (method != "GET") {
-      var body = JSONStringify(params);
+      var body = JSON.stringify(params);
       req.setHeader("Content-Length", body.length);
       req.setHeader("Content-Type", "application/json");
       req.write(body);
