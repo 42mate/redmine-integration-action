@@ -20,8 +20,6 @@ async function run() {
       hostname,
     );
 
-    const method = "PUT";
-
     const message = `New PR created on Github [${pr.data.number}][${pr.url}]`;
     const params = {
       issue: {
@@ -38,14 +36,13 @@ async function run() {
       },
     };
 
-    console.log(options);
     var req = http.request(options, function (res) {
       if (
         res.statusCode != 200 &&
         res.statusCode != 201 &&
         res.statusCode != 204
       ) {
-        return;
+        throw new Error("error");
       }
 
       var body = "";
@@ -60,15 +57,13 @@ async function run() {
     });
 
     req.on("error", function (err) {
-      console.log(err);
+      throw err;
     });
 
-    if (method != "GET") {
-      var body = JSON.stringify(params);
-      req.setHeader("Content-Length", body.length);
-      req.setHeader("Content-Type", "application/json");
-      req.write(body);
-    }
+    var body = JSON.stringify(params);
+    req.setHeader("Content-Type", "application/json");
+    req.write(body);
+
     req.end();
   } catch (error) {
     console.error("error: " + error);
