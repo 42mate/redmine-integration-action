@@ -1,47 +1,85 @@
-const helper = require('./helper.js');
+const helper = require("./helper.js");
 
-const core = require('@actions/core');
-const github = require('@actions/github');
-const Redmine = require('node-redmine');
+const core = require("@actions/core");
+const github = require("@actions/github");
+const Redmine = require("node-redmine");
+const http = require("http");
 
 async function run() {
   try {
     const context = github.context;
-    const octokit = github.getOctokit(core.getInput('token'));
+    const octokit = github.getOctokit(core.getInput("token"));
 
-    const hostname = core.getInput('redmine_host');
-    const config = {
-      apiKey: core.getInput('redmine_apikey')
-    };
-    if (config.apiKey == '') {
-      console.log("redmine apikey has not set. ignored");
-      process.eixtCode = 0;
-      return
-    }
-
+    const hostname = core.getInput("redmine_host");
     const redmine = new Redmine(hostname, config);
+
     const pr = await octokit.rest.pulls.get({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      pull_number: context.payload.pull_request.number
+      pull_number: context.payload.pull_request.number,
     });
 
-    const redmine_issue_numbers = await helper.parse_redmine_issues(pr.data.body, hostname);
-
-    const message = await helper.build_message(pr.data, context)
+    const issueNumber = await helper.parse_redmine_issues(
+      pr.data.body,
+      hostname,
+    )[0];
+    const message = `New PR created on Github [${pr.data.number}][${pr.url}]`;
     const redmine_issue = {
-      "issue": {
-        "notes": message
-      }
+      issue: {
+        notes: message,
+      },
     };
 
-    redmine_issue_numbers.forEach(id => {
-      redmine.update_issue(id, redmine_issue, function(err, data) {
-        if (err) throw err;
+    var options = {
+      host: hostname,
+      path: `/issues/${issueNumber}.json`,
+      method: method,
+      headers: {
+        "X-Redmine-API-Key": this.getApiKey(),
+      },
+    };
 
-        console.log("update issue: " + JSON.stringify(redmine_issue));
+    var req = http.request(options, function (res) {
+      if (
+        res.statusCode != 200 &&
+        res.statusCode != 201 &&
+        res.statusCode != 204
+      ) {
+        callback(
+          {
+            message: "Server returns stats code: " + res.statusCode,
+            response: res,
+          },
+          null,
+        );
+        callback = null;
+        return;
+      }
+
+      var body = "";
+      res.setEncoding("utf8");
+      res.on("data", function (chunk) {
+        body += chunk;
+      });
+      res.on("end", function (e) {
+        var data = JSON.parse(body);
+        callback(null, data);
+        callback = null;
       });
     });
+
+    req.on("error", function (err) {
+      callback(err, null);
+      callback = null;
+    });
+
+    if (method != "GET") {
+      var body = JSONStringify(params);
+      req.setHeader("Content-Length", body.length);
+      req.setHeader("Content-Type", "application/json");
+      req.write(body);
+    }
+    req.end();
   } catch (error) {
     console.error("error: " + error);
     process.exitCode = 1;
