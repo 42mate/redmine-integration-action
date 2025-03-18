@@ -10288,6 +10288,7 @@ async function run() {
     var body = JSON.stringify(params);
 
     req.write(body);
+    console.log(req.headers);
     console.log("pushing the message");
     req.end();
   } catch (error) {
