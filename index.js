@@ -39,6 +39,7 @@ async function run() {
     };
 
     console.log(options);
+
     var req = http.request(options, function (res) {
       if (
         res.statusCode != 200 &&
