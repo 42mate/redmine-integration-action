@@ -18,6 +18,7 @@ function closePRBody(pr) {
 }
 
 function mergePRBody(pr, percentage) {
+  console.log(percentage);
   const body = {
     notes: `PR MERGED ${pr.url}`,
     done_ratio: percentage,
