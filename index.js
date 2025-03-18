@@ -54,17 +54,17 @@ async function parseRedmineIssues(prdata, redmine_host) {
   return issues;
 }
 
-// async function put() {
-//   const { hostname, number, action, merged, pr } = options;
-//   return await fetch(`${hostname}/issues/${number}.json`, {
-//     method: "PUT",
-//     headers: {
-//       "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
-//       "Content-type": "application/json",
-//     },
-//     body: JSON.stringify(getBody(action, merged, pr)),
-//   });
-// }
+async function put(options) {
+  const { hostname, number, action, merged, pr } = options;
+  return await fetch(`${hostname}/issues/${number}.json`, {
+    method: "PUT",
+    headers: {
+      "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(getBody(action, merged, pr)),
+  });
+}
 
 async function run() {
   try {
@@ -82,14 +82,21 @@ async function run() {
     const issueNumbers = await parseRedmineIssues(pr.data.body, hostname);
 
     console.log(hostname, issueNumbers);
-    const res = await fetch(`${hostname}/issues/${issueNumbers.pop()}.json`, {
-      method: "PUT",
-      headers: {
-        "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(getBody(action, merged, pr)),
+    const res = await put({
+      hostname: hostname,
+      number: issueNumbers.pop(),
+      action: action,
+      merged: merged,
+      pr: pr,
     });
+    // const res = await fetch(`${hostname}/issues/${issueNumbers.pop()}.json`, {
+    //   method: "PUT",
+    //   headers: {
+    //     "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
+    //     "Content-type": "application/json",
+    //   },
+    //   body: JSON.stringify(getBody(action, merged, pr)),
+    // });
 
     console.log(res.status);
   } catch (error) {
