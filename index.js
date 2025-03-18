@@ -3,9 +3,46 @@ const helper = require("./helper.js");
 const core = require("@actions/core");
 const github = require("@actions/github");
 
+function newPRBody(pr) {
+  return {
+    issue: {
+      notes: pr.data.body + "\n" + pr.url,
+    },
+  };
+}
+
+function closePRBody(pr) {
+  return {
+    issue: {
+      notes: `PR CLOSED ${pr.url}`,
+    },
+  };
+}
+
+function mergePRBody(pr) {
+  return {
+    issue: {
+      notes: `PR MERGED ${pr.url}`,
+      status_id: 3,
+    },
+  };
+}
+
+function getBody(action, pr) {
+  switch (action) {
+    case "open":
+      return newPRBody(pr);
+    case "merge":
+      return mergePRBody(pr);
+    case "close":
+      return closePRBody(pr);
+  }
+}
+
 async function run() {
   try {
     const context = github.context;
+    const action = context.event.action;
     const octokit = github.getOctokit(core.getInput("token"));
     const hostname = core.getInput("REDMINE_HOST");
     const pr = await octokit.rest.pulls.get({
@@ -19,20 +56,16 @@ async function run() {
       hostname,
     );
 
-    const params = {
-      issue: {
-        notes: pr.data.body + "\n" + pr.url,
-      },
-    };
-
     const res = await fetch(`${hostname}/issues/${issueNumber.pop()}.json`, {
       method: "PUT",
       headers: {
         "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
         "Content-type": "application/json",
       },
-      body: JSON.stringify(params),
+      body: JSON.stringify(getBody(action, pr)),
     });
+
+    console.log(res.statusCode);
   } catch (error) {
     console.error("error: " + error);
     process.exitCode = 1;
