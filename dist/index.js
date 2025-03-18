@@ -10249,6 +10249,9 @@ async function run() {
       pr.data.body,
       hostname,
     )[0];
+
+    const method = "PUT";
+
     const message = `New PR created on Github [${pr.data.number}][${pr.url}]`;
     const params = {
       issue: {
@@ -10261,7 +10264,7 @@ async function run() {
       path: `/issues/${issueNumber}.json`,
       method: method,
       headers: {
-        "X-Redmine-API-Key": this.getApiKey(),
+        "X-Redmine-API-Key": core.getInput("redmine_apikey"),
       },
     };
 
@@ -10271,14 +10274,6 @@ async function run() {
         res.statusCode != 201 &&
         res.statusCode != 204
       ) {
-        callback(
-          {
-            message: "Server returns stats code: " + res.statusCode,
-            response: res,
-          },
-          null,
-        );
-        callback = null;
         return;
       }
 
@@ -10289,14 +10284,12 @@ async function run() {
       });
       res.on("end", function (e) {
         var data = JSON.parse(body);
-        callback(null, data);
-        callback = null;
+        console.log(data);
       });
     });
 
     req.on("error", function (err) {
-      callback(err, null);
-      callback = null;
+      console.log(err);
     });
 
     if (method != "GET") {
