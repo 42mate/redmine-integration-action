@@ -10258,10 +10258,6 @@ async function run() {
       host: "redmine.42mate.com",
       path: `/issues/9196.json`,
       method: "PUT",
-      headers: {
-        "X-Redmine-API-Key": "ec234c37b836236e0de1d91de607b301ed1eb370",
-        "Content-type": "application/json",
-      },
     };
 
     console.log("before request");
@@ -10278,6 +10274,11 @@ async function run() {
       process.exitCode = 0;
     });
 
+    req.setHeader(
+      "X-Redmine-API-key",
+      "ec234c37b836236e0de1d91de607b301ed1eb370",
+    );
+    req.setHeader("Content-type", "application/json");
     req.on("error", function (err) {
       console.log("before ");
       console.log(err);
