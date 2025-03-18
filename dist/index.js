@@ -13328,6 +13328,7 @@ async function run() {
   try {
     const context = github.context;
     const action = context.payload.action;
+    console.log(context.payload.reason);
     const octokit = github.getOctokit(core.getInput("token"));
     const hostname = core.getInput("REDMINE_HOST");
     const pr = await octokit.rest.pulls.get({
