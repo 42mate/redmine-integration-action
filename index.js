@@ -2,7 +2,7 @@ const helper = require("./helper.js");
 
 const core = require("@actions/core");
 const github = require("@actions/github");
-const http = require("https");
+const http = require("http");
 
 async function run() {
   try {
