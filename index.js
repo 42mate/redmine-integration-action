@@ -2,7 +2,6 @@ const helper = require("./helper.js");
 
 const core = require("@actions/core");
 const github = require("@actions/github");
-const Redmine = require("node-redmine");
 const http = require("http");
 
 async function run() {
@@ -11,7 +10,6 @@ async function run() {
     const octokit = github.getOctokit(core.getInput("token"));
 
     const hostname = core.getInput("redmine_host");
-    const redmine = new Redmine(hostname, config);
 
     const pr = await octokit.rest.pulls.get({
       owner: context.repo.owner,
@@ -24,7 +22,7 @@ async function run() {
       hostname,
     )[0];
     const message = `New PR created on Github [${pr.data.number}][${pr.url}]`;
-    const redmine_issue = {
+    const params = {
       issue: {
         notes: message,
       },
