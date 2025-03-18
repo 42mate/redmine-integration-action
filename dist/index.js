@@ -13344,14 +13344,18 @@ async function run() {
     const merged = context.payload.pull_request?.merged;
     const issueNumbers = await parseRedmineIssues(pr.data.body, hostname);
 
-    console.log(hostname, issueNumbers);
-    const res = await put({
-      hostname: hostname,
-      number: issueNumbers.pop(),
-      action: action,
-      merged: merged,
-      pr: pr,
-    });
+    for (const number of issueNumbers) {
+      const res = await put({
+        hostname: hostname,
+        number: number,
+        action: action,
+        merged: merged,
+        pr: pr,
+      });
+      if (res.status != 204) {
+        throw new Error(res);
+      }
+    }
     // const res = await fetch(`${hostname}/issues/${issueNumbers.pop()}.json`, {
     //   method: "PUT",
     //   headers: {
