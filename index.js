@@ -83,14 +83,15 @@ async function run() {
     const merged = context.payload.pull_request?.merged;
     const issueNumbers = await parseRedmineIssues(pr.data.body, hostname);
 
-    const promises = issueNumbers.map((number) =>
-      put({
-        hostname: hostname,
-        number: number,
-        action: action,
-        merged: merged,
-        pr: pr,
-      }),
+    const promises = issueNumbers.map(
+      async (number) =>
+        await put({
+          hostname: hostname,
+          number: number,
+          action: action,
+          merged: merged,
+          pr: pr,
+        }),
     );
     console.log(promises);
     console.log(await Promise.all(promises));
