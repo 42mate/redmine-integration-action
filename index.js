@@ -36,8 +36,6 @@ async function run() {
       },
     };
 
-    https.get("https://google.com", (res) => console.log(res));
-
     https
       .get("https://jsonplaceholder.typicode.com/users", (res) => {
         let data = [];
