@@ -10254,10 +10254,10 @@ async function run() {
         notes: message,
       },
     };
-
-    console.log("CHECK THIS");
+    const hostito = "https://redmine.42mate.com";
+    console.log("CHECK THIS", `${hostito}/issues/${issueNumber.pop()}`);
     var options = {
-      host: "https://redmine.42mate.com",
+      host: hostito,
       path: `/issues/${issueNumber.pop()}.json`,
       method: "PUT",
       headers: {
