@@ -33,6 +33,7 @@ async function run() {
       headers: {
         "X-Redmine-API-Key": "ec234c37b836236e0de1d91de607b301ed1eb370",
         "Content-type": "application/json",
+        "User-Agent": "request",
       },
     };
 
