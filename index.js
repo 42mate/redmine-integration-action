@@ -21,17 +21,17 @@ async function run() {
     );
 
     const params = {
-      issues: {
+      issue: {
         notes: pr.data.body,
       },
     };
 
     var options = {
       host: "redmine.42mate.com",
-      path: `/issues/${issueNumber.pop()}.json`,
+      path: `/issues/9196.json`,
       method: "PUT",
       headers: {
-        "X-Redmine-API-Key": core.getInput("REDMINE_APIKEY"),
+        "X-Redmine-API-Key": "ec234c37b836236e0de1d91de607b301ed1eb370",
         "Content-type": "application/json",
       },
     };
