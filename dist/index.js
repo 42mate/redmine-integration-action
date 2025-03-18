@@ -13350,7 +13350,7 @@ async function run() {
       body: JSON.stringify(getBody(action, pr)),
     });
 
-    console.log(res.statusCode);
+    console.log(res.status);
   } catch (error) {
     console.error("error: " + error);
     process.exitCode = 1;
