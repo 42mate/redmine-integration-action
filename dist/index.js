@@ -10250,7 +10250,7 @@ async function run() {
 
     const message = `New PR created on Github [${pr.data.number}][${pr.url}]`;
     const params = {
-      issue: {
+      issues: {
         notes: message,
       },
     };
@@ -10261,6 +10261,7 @@ async function run() {
       method: "PUT",
       headers: {
         "X-Redmine-API-Key": "ec234c37b836236e0de1d91de607b301ed1eb370",
+        "Content-type": "application/json",
       },
     };
 
