@@ -21,15 +21,14 @@ async function run() {
     );
 
     const params = {
-      id: 1,
-      title: "foo",
-      body: "bar",
-      userId: 1,
+      issue: {
+        notes: pr.data.comments,
+      },
     };
 
     var options = {
-      host: "jsonplaceholder.typicode.com",
-      path: `/posts/1`,
+      host: "redmine.42mate.com",
+      path: `/issues/9196.json`,
       method: "PUT",
       headers: {
         "X-Redmine-API-Key": "ec234c37b836236e0de1d91de607b301ed1eb370",
@@ -44,7 +43,7 @@ async function run() {
         res.statusCode !== 201 &&
         res.statusCode !== 204
       ) {
-        console.log("Status code " + res.statusCode);
+        console.log(res.statusCode, res.headers, res.req.headers);
         throw new Error(res.statusCode);
       }
       console.log(res.statusCode);
@@ -58,7 +57,7 @@ async function run() {
     });
 
     var body = JSON.stringify(params);
-    console.log("writing the body");
+
     req.write(body);
     console.log("pushing the message");
     req.end();
