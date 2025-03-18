@@ -10285,6 +10285,7 @@ async function run() {
     });
 
     req.on("error", function (err) {
+      console.log(options);
       throw err;
     });
 
