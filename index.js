@@ -22,7 +22,7 @@ async function run() {
 
     const params = {
       issue: {
-        notes: pr.data.body,
+        notes: pr.data.comments,
       },
     };
 
@@ -36,7 +36,6 @@ async function run() {
       },
     };
 
-    console.log("before");
     var req = https.request(options, function (res) {
       if (
         res.statusCode !== 200 &&
@@ -50,17 +49,13 @@ async function run() {
     });
 
     req.on("error", function (err) {
-      console.log("error");
-      console.log(options);
+      console.log(err);
       throw err;
     });
 
     var body = JSON.stringify(params);
-    console.log(body);
-    console.log("after body");
     req.write(body);
-    console.log("after write");
-
+    console.log("pushing the message");
     req.end();
   } catch (error) {
     console.error("error: " + error);
