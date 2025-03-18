@@ -8,7 +8,7 @@ async function run() {
   try {
     const context = github.context;
     const octokit = github.getOctokit(core.getInput("token"));
-    const hostname = core.getInput("redmine_host");
+    const hostname = core.getInput("REDMINE_HOST");
     const pr = await octokit.rest.pulls.get({
       owner: context.repo.owner,
       repo: context.repo.repo,
@@ -32,7 +32,7 @@ async function run() {
       path: `issues/${issueNumber.pop()}.json`,
       method: "PUT",
       headers: {
-        "X-Redmine-API-Key": core.getInput("redmine_apikey"),
+        "X-Redmine-API-Key": core.getInput("REDMINE_APIKEY"),
       },
     };
 
