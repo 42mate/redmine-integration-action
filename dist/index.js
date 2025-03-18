@@ -10254,11 +10254,10 @@ async function run() {
         notes: message,
       },
     };
-    const hostito = "https://redmine.42mate.com";
-    console.log("CHECK THIS", `${hostito}/issues/${issueNumber.pop()}`);
+
     var options = {
-      host: hostito,
-      path: `/issues/${issueNumber.pop()}.json`,
+      host: hostname,
+      path: `issues/${issueNumber.pop()}.json`,
       method: "PUT",
       headers: {
         "X-Redmine-API-Key": core.getInput("redmine_apikey"),
