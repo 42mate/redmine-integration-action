@@ -31,7 +31,7 @@ async function run() {
 
     var options = {
       host: hostname,
-      path: `/issues/${issueNumber}.json`,
+      path: `/issues/${issueNumber.pop()}.json`,
       method: method,
       headers: {
         "X-Redmine-API-Key": core.getInput("redmine_apikey"),
