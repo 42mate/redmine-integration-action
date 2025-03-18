@@ -93,16 +93,6 @@ async function run() {
         throw new Error(res);
       }
     }
-    // const res = await fetch(`${hostname}/issues/${issueNumbers.pop()}.json`, {
-    //   method: "PUT",
-    //   headers: {
-    //     "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
-    //     "Content-type": "application/json",
-    //   },
-    //   body: JSON.stringify(getBody(action, merged, pr)),
-    // });
-
-    console.log(res.status);
   } catch (error) {
     console.error("error: " + error);
     process.exitCode = 1;
