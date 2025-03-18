@@ -13285,6 +13285,7 @@ function mergePRBody(pr) {
     issue: {
       notes: `PR MERGED ${pr.url}`,
       status_id: 3,
+      done_ratio: 100,
     },
   };
 }
