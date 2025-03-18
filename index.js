@@ -30,11 +30,11 @@ function mergePRBody(pr) {
 
 function getBody(action, pr) {
   switch (action) {
-    case "open":
+    case "opened":
       return newPRBody(pr);
-    case "merge":
+    case "merged":
       return mergePRBody(pr);
-    case "close":
+    case "closed":
       return closePRBody(pr);
   }
 }
@@ -42,8 +42,7 @@ function getBody(action, pr) {
 async function run() {
   try {
     const context = github.context;
-    console.log(context);
-    const action = context.event.action;
+    const action = context.payload.action;
     const octokit = github.getOctokit(core.getInput("token"));
     const hostname = core.getInput("REDMINE_HOST");
     const pr = await octokit.rest.pulls.get({
