@@ -10248,10 +10248,9 @@ async function run() {
       hostname,
     );
 
-    const message = `New PR created on Github [${pr.data.number}][${pr.url}]`;
     const params = {
       issues: {
-        notes: message,
+        notes: pr.data.body,
       },
     };
 
@@ -10260,7 +10259,7 @@ async function run() {
       path: `/issues/${issueNumber.pop()}.json`,
       method: "PUT",
       headers: {
-        "X-Redmine-API-Key": "ec234c37b836236e0de1d91de607b301ed1eb370",
+        "X-Redmine-API-Key": core.getInput("REDMINE_APIKEY"),
         "Content-type": "application/json",
       },
     };
@@ -10271,19 +10270,10 @@ async function run() {
         res.statusCode !== 201 &&
         res.statusCode !== 204
       ) {
-        console.log(res);
+        console.log(res.statusCode);
         throw new Error("error");
       }
-
-      var body = "";
-      res.setEncoding("utf8");
-      res.on("data", function (chunk) {
-        body += chunk;
-      });
-      res.on("end", function (e) {
-        var data = JSON.parse(body);
-        console.log(data);
-      });
+      console.log(res.statusCode);
     });
 
     req.on("error", function (err) {
@@ -10292,7 +10282,7 @@ async function run() {
     });
 
     var body = JSON.stringify(params);
-    req.setHeader("Content-Type", "application/json");
+    console.log(body);
     req.write(body);
 
     req.end();
