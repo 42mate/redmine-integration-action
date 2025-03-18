@@ -38,6 +38,8 @@ async function run() {
       },
     };
 
+    console.log(options);
+
     console.log("issue", issueNumber);
 
     var req = http.request(options, function (res) {
