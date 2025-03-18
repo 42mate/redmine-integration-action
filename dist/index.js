@@ -13327,6 +13327,7 @@ function getBody(action, pr) {
 async function run() {
   try {
     const context = github.context;
+    console.log(context);
     const action = context.event.action;
     const octokit = github.getOctokit(core.getInput("token"));
     const hostname = core.getInput("REDMINE_HOST");
