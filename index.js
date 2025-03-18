@@ -18,7 +18,7 @@ async function run() {
     const issueNumber = await helper.parse_redmine_issues(
       pr.data.body,
       hostname,
-    )[0];
+    );
 
     const method = "PUT";
 
