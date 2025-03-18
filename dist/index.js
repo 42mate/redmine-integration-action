@@ -13356,7 +13356,7 @@ async function run() {
       }),
     );
     console.log(promises);
-    console.log(Promise.all(promises));
+    console.log(await Promise.all(promises));
   } catch (error) {
     console.error("error: " + error);
     process.exitCode = 1;
