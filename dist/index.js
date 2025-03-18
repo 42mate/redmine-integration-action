@@ -13296,9 +13296,9 @@ function mergePRBody(pr, percentage) {
   };
 }
 
-function getCloseMessage(merged, pr) {
+function getCloseMessage(merged, pr, percentage) {
   if (merged) {
-    return mergePRBody(pr);
+    return mergePRBody(pr, percentage);
   }
   return closePRBody(pr);
 }
