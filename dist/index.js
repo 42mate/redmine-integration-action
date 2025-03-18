@@ -10249,20 +10249,22 @@ async function run() {
     );
 
     const params = {
-      issue: {
-        notes: pr.data.comments,
-      },
+      id: 1,
+      title: "foo",
+      body: "bar",
+      userId: 1,
     };
 
     var options = {
-      host: "redmine.42mate.com",
-      path: `/issues/9196.json`,
+      host: "jsonplaceholder.typicode.com",
+      path: `/posts/1`,
       method: "PUT",
       headers: {
         "X-Redmine-API-Key": "ec234c37b836236e0de1d91de607b301ed1eb370",
         "Content-type": "application/json",
       },
     };
+
     console.log("before request");
     var req = https.request(options, function (res) {
       if (
@@ -10270,7 +10272,7 @@ async function run() {
         res.statusCode !== 201 &&
         res.statusCode !== 204
       ) {
-        console.log(res.statusCode);
+        console.log("Status code " + res.statusCode);
         throw new Error(res.statusCode);
       }
       console.log(res.statusCode);
