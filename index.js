@@ -54,17 +54,17 @@ async function parseRedmineIssues(prdata, redmine_host) {
   return issues;
 }
 
-async function put() {
-  const { hostname, number, action, merged, pr } = options;
-  return await fetch(`${hostname}/issues/${number}.json`, {
-    method: "PUT",
-    headers: {
-      "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify(getBody(action, merged, pr)),
-  });
-}
+// async function put() {
+//   const { hostname, number, action, merged, pr } = options;
+//   return await fetch(`${hostname}/issues/${number}.json`, {
+//     method: "PUT",
+//     headers: {
+//       "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
+//       "Content-type": "application/json",
+//     },
+//     body: JSON.stringify(getBody(action, merged, pr)),
+//   });
+// }
 
 async function run() {
   try {
@@ -81,6 +81,7 @@ async function run() {
     const merged = context.payload.pull_request?.merged;
     const issueNumbers = await parseRedmineIssues(pr.data.body, hostname);
 
+    console.log(hostname, issueNumbers);
     const res = await fetch(`${hostname}/issues/${issueNumbers.pop()}.json`, {
       method: "PUT",
       headers: {
