@@ -13313,14 +13313,19 @@ function mergePRBody(pr) {
   };
 }
 
-function getBody(action, pr) {
+function getCloseMessage(merged, pr) {
+  if (merged) {
+    return mergePRBody(pr);
+  }
+  return closePRBody(pr);
+}
+
+function getBody(action, merged, pr) {
   switch (action) {
     case "opened":
       return newPRBody(pr);
-    case "merged":
-      return mergePRBody(pr);
     case "closed":
-      return closePRBody(pr);
+      return getCloseMessage(merged, pr);
   }
 }
 
@@ -13328,7 +13333,7 @@ async function run() {
   try {
     const context = github.context;
     const action = context.payload.action;
-    console.log(context.payload.pull_request.merged);
+    console.log(context.payload);
     const octokit = github.getOctokit(core.getInput("token"));
     const hostname = core.getInput("REDMINE_HOST");
     const pr = await octokit.rest.pulls.get({
@@ -13348,7 +13353,9 @@ async function run() {
         "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
         "Content-type": "application/json",
       },
-      body: JSON.stringify(getBody(action, pr)),
+      body: JSON.stringify(
+        getBody(action, context.payload.pull_request?.merged, pr),
+      ),
     });
 
     console.log(res.status);
