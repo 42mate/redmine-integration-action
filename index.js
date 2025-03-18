@@ -57,6 +57,7 @@ async function parseRedmineIssues(prdata, redmine_host) {
 
 async function put(options) {
   const { hostname, number, action, merged, pr } = options;
+  console.log(options);
   return await fetch(`${hostname}/issues/${number}.json`, {
     method: "PUT",
     headers: {
