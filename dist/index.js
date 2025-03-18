@@ -13355,8 +13355,8 @@ async function run() {
         pr: pr,
       }),
     );
-
-    await Promise.all(promises);
+    console.log(promises);
+    console.log(Promise.all(promises));
   } catch (error) {
     console.error("error: " + error);
     process.exitCode = 1;
