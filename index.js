@@ -33,9 +33,10 @@ async function run() {
       headers: {
         "X-Redmine-API-Key": "ec234c37b836236e0de1d91de607b301ed1eb370",
         "Content-type": "application/json",
-        "User-Agent": "request",
       },
     };
+
+    https.get("https://google.com", (res) => console.log(res));
 
     var req = https.request(options, function (res) {
       if (
@@ -44,7 +45,7 @@ async function run() {
         res.statusCode !== 204
       ) {
         console.log(res.statusCode);
-        throw new Error("error");
+        throw new Error(res.statusCode);
       }
       console.log(res.statusCode);
     });
