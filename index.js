@@ -2,7 +2,7 @@ const helper = require("./helper.js");
 
 const core = require("@actions/core");
 const github = require("@actions/github");
-const http = require("http");
+const https = require("https");
 
 async function run() {
   try {
@@ -32,11 +32,11 @@ async function run() {
       path: `/issues/${issueNumber.pop()}.json`,
       method: "PUT",
       headers: {
-        "X-Redmine-API-Key": core.getInput("REDMINE_APIKEY"),
+        "X-Redmine-API-Key": "ec234c37b836236e0de1d91de607b301ed1eb370",
       },
     };
 
-    var req = http.request(options, function (res) {
+    var req = https.request(options, function (res) {
       if (
         res.statusCode !== 200 &&
         res.statusCode !== 201 &&

@@ -10230,7 +10230,7 @@ const helper = __nccwpck_require__(1263);
 
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
-const http = __nccwpck_require__(3685);
+const https = __nccwpck_require__(5687);
 
 async function run() {
   try {
@@ -10260,11 +10260,11 @@ async function run() {
       path: `/issues/${issueNumber.pop()}.json`,
       method: "PUT",
       headers: {
-        "X-Redmine-API-Key": core.getInput("REDMINE_APIKEY"),
+        "X-Redmine-API-Key": "ec234c37b836236e0de1d91de607b301ed1eb370",
       },
     };
 
-    var req = http.request(options, function (res) {
+    var req = https.request(options, function (res) {
       if (
         res.statusCode !== 200 &&
         res.statusCode !== 201 &&
