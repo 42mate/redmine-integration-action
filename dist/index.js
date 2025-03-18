@@ -13280,14 +13280,19 @@ function closePRBody(pr) {
   };
 }
 
-function mergePRBody(pr) {
+function mergePRBody(pr, percentage) {
+  const body = {
+    notes: `PR MERGED ${pr.url}`,
+    done_ratio: percentage,
+  }
+  if (percentage == 100) {
+    return {
+      issue: {...body, status_id: 3}
+    }
+  }
   return {
-    issue: {
-      notes: `PR MERGED ${pr.url}`,
-      status_id: 3,
-      done_ratio: 100,
-    },
-  };
+    issue: body
+  }
 }
 
 function getCloseMessage(merged, pr) {
@@ -13297,12 +13302,12 @@ function getCloseMessage(merged, pr) {
   return closePRBody(pr);
 }
 
-function getBody(action, merged, pr) {
+function getBody(action, merged, pr, percentage) {
   switch (action) {
-    case "opened":
-      return newPRBody(pr);
-    case "closed":
-      return getCloseMessage(merged, pr);
+  case "opened":
+    return newPRBody(pr);
+  case "closed":
+    return getCloseMessage(merged, pr, percentage);
   }
 }
 
@@ -13318,15 +13323,21 @@ async function parseRedmineIssues(prdata, redmine_host) {
   return issues;
 }
 
+async function parsePercentageDone(prdata) {
+  const regexp = new RegExp(".*PERCENTAGE_DONE=(\\d+).*", "g");
+  const result = regexp.exec(prdata);
+  return parseInt(result[1]);
+}
+
 async function put(options) {
-  const { hostname, number, action, merged, pr } = options;
+  const { hostname, number, action, merged, pr, percentage } = options;
   return await fetch(`${hostname}/issues/${number}.json`, {
     method: "PUT",
     headers: {
       "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
       "Content-type": "application/json",
     },
-    body: JSON.stringify(getBody(action, merged, pr)),
+    body: JSON.stringify(getBody(action, merged, pr, percentage)),
   });
 }
 
@@ -13344,6 +13355,7 @@ async function run() {
 
     const merged = context.payload.pull_request?.merged;
     const issueNumbers = await parseRedmineIssues(pr.data.body, hostname);
+    const percentageDone = await parsePercentageDone(pr.data.body);
 
     for (const number of issueNumbers) {
       const res = await put({
@@ -13352,6 +13364,7 @@ async function run() {
         action: action,
         merged: merged,
         pr: pr,
+	percentage: percentageDone,
       });
       if (res.status != 204) {
         throw new Error(res);
