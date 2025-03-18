@@ -10236,9 +10236,7 @@ async function run() {
   try {
     const context = github.context;
     const octokit = github.getOctokit(core.getInput("token"));
-
     const hostname = core.getInput("redmine_host");
-
     const pr = await octokit.rest.pulls.get({
       owner: context.repo.owner,
       repo: context.repo.repo,
@@ -10267,6 +10265,8 @@ async function run() {
         "X-Redmine-API-Key": core.getInput("redmine_apikey"),
       },
     };
+
+    console.log("issue", issueNumber);
 
     var req = http.request(options, function (res) {
       if (
