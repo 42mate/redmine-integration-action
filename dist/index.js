@@ -13281,7 +13281,6 @@ function closePRBody(pr) {
 }
 
 function mergePRBody(pr, percentage) {
-  console.log(percentage);
   const body = {
     notes: `PR MERGED ${pr.url}`,
     done_ratio: percentage,
@@ -13358,7 +13357,6 @@ async function run() {
     const issueNumbers = await parseRedmineIssues(pr.data.body, hostname);
     const percentageDone = await parsePercentageDone(pr.data.body);
 
-    console.log(percentageDone);
     for (const number of issueNumbers) {
       const res = await put({
         hostname: hostname,
