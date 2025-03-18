@@ -13004,6 +13004,14 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ 5448:
+/***/ ((module) => {
+
+module.exports = eval("require")("./helper.js");
+
+
+/***/ }),
+
 /***/ 133:
 /***/ ((module) => {
 
@@ -13261,6 +13269,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
+const helper = __nccwpck_require__(5448);
 const fetch = __nccwpck_require__(467);
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
@@ -13318,9 +13327,8 @@ async function parseRedmineIssues(prdata, redmine_host) {
   return issues;
 }
 
-async function put(options) {
+async function put() {
   const { hostname, number, action, merged, pr } = options;
-  console.log(options);
   return await fetch(`${hostname}/issues/${number}.json`, {
     method: "PUT",
     headers: {
@@ -13346,18 +13354,16 @@ async function run() {
     const merged = context.payload.pull_request?.merged;
     const issueNumbers = await parseRedmineIssues(pr.data.body, hostname);
 
-    const promises = issueNumbers.map(
-      async (number) =>
-        await put({
-          hostname: hostname,
-          number: number,
-          action: action,
-          merged: merged,
-          pr: pr,
-        }),
-    );
-    console.log(promises);
-    console.log(await Promise.all(promises));
+    const res = await fetch(`${hostname}/issues/${issueNumbers.pop()}.json`, {
+      method: "PUT",
+      headers: {
+        "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(getBody(action, merged, pr)),
+    });
+
+    console.log(res.status);
   } catch (error) {
     console.error("error: " + error);
     process.exitCode = 1;

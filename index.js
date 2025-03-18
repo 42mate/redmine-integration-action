@@ -1,3 +1,4 @@
+const helper = require("./helper.js");
 const fetch = require("node-fetch");
 const core = require("@actions/core");
 const github = require("@actions/github");
@@ -55,9 +56,8 @@ async function parseRedmineIssues(prdata, redmine_host) {
   return issues;
 }
 
-async function put(options) {
+async function put() {
   const { hostname, number, action, merged, pr } = options;
-  console.log(options);
   return await fetch(`${hostname}/issues/${number}.json`, {
     method: "PUT",
     headers: {
@@ -83,18 +83,16 @@ async function run() {
     const merged = context.payload.pull_request?.merged;
     const issueNumbers = await parseRedmineIssues(pr.data.body, hostname);
 
-    const promises = issueNumbers.map(
-      async (number) =>
-        await put({
-          hostname: hostname,
-          number: number,
-          action: action,
-          merged: merged,
-          pr: pr,
-        }),
-    );
-    console.log(promises);
-    console.log(await Promise.all(promises));
+    const res = await fetch(`${hostname}/issues/${issueNumbers.pop()}.json`, {
+      method: "PUT",
+      headers: {
+        "X-redmine-api-key": core.getInput("REDMINE_APIKEY"),
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(getBody(action, merged, pr)),
+    });
+
+    console.log(res.status);
   } catch (error) {
     console.error("error: " + error);
     process.exitCode = 1;
