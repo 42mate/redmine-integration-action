@@ -27,6 +27,7 @@ async function run() {
       },
     };
 
+    console.log("CHECK THIS");
     var options = {
       host: "https://redmine.42mate.com",
       path: `/issues/${issueNumber.pop()}.json`,
