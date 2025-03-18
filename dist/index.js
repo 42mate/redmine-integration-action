@@ -10266,28 +10266,55 @@ async function run() {
 
     https.get("https://google.com", (res) => console.log(res));
 
-    var req = https.request(options, function (res) {
-      if (
-        res.statusCode !== 200 &&
-        res.statusCode !== 201 &&
-        res.statusCode !== 204
-      ) {
-        console.log(res.statusCode);
-        throw new Error(res.statusCode);
-      }
-      console.log(res.statusCode);
-    });
+    https
+      .get("https://jsonplaceholder.typicode.com/users", (res) => {
+        let data = [];
+        const headerDate =
+          res.headers && res.headers.date
+            ? res.headers.date
+            : "no response date";
+        console.log("Status Code:", res.statusCode);
+        console.log("Date in Response header:", headerDate);
 
-    req.on("error", function (err) {
-      console.log(options);
-      throw err;
-    });
+        res.on("data", (chunk) => {
+          data.push(chunk);
+        });
 
-    var body = JSON.stringify(params);
-    console.log(body);
-    req.write(body);
+        res.on("end", () => {
+          console.log("Response ended: ");
+          const users = JSON.parse(Buffer.concat(data).toString());
 
-    req.end();
+          for (user of users) {
+            console.log(`Got user with id: ${user.id}, name: ${user.name}`);
+          }
+        });
+      })
+      .on("error", (err) => {
+        console.log("Error: ", err.message);
+      });
+
+    // var req = https.request(options, function (res) {
+    //   if (
+    //     res.statusCode !== 200 &&
+    //     res.statusCode !== 201 &&
+    //     res.statusCode !== 204
+    //   ) {
+    //     console.log(res.statusCode);
+    //     throw new Error(res.statusCode);
+    //   }
+    //   console.log(res.statusCode);
+    // });
+
+    // req.on("error", function (err) {
+    //   console.log(options);
+    //   throw err;
+    // });
+
+    // var body = JSON.stringify(params);
+    // console.log(body);
+    // req.write(body);
+
+    // req.end();
   } catch (error) {
     console.error("error: " + error);
     process.exitCode = 1;
