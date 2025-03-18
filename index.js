@@ -21,15 +21,15 @@ function mergePRBody(pr, percentage) {
   const body = {
     notes: `PR MERGED ${pr.url}`,
     done_ratio: percentage,
-  }
+  };
   if (percentage == 100) {
     return {
-      issue: {...body, status_id: 3}
-    }
+      issue: { ...body, status_id: 3 },
+    };
   }
   return {
-    issue: body
-  }
+    issue: body,
+  };
 }
 
 function getCloseMessage(merged, pr) {
@@ -41,10 +41,10 @@ function getCloseMessage(merged, pr) {
 
 function getBody(action, merged, pr, percentage) {
   switch (action) {
-  case "opened":
-    return newPRBody(pr);
-  case "closed":
-    return getCloseMessage(merged, pr, percentage);
+    case "opened":
+      return newPRBody(pr);
+    case "closed":
+      return getCloseMessage(merged, pr, percentage);
   }
 }
 
@@ -94,6 +94,7 @@ async function run() {
     const issueNumbers = await parseRedmineIssues(pr.data.body, hostname);
     const percentageDone = await parsePercentageDone(pr.data.body);
 
+    console.log(percentageDone);
     for (const number of issueNumbers) {
       const res = await put({
         hostname: hostname,
@@ -101,7 +102,7 @@ async function run() {
         action: action,
         merged: merged,
         pr: pr,
-	percentage: percentageDone,
+        percentage: percentageDone,
       });
       if (res.status != 204) {
         throw new Error(res);
