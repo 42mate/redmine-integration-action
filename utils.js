@@ -123,7 +123,7 @@ async function parseAttachements(prdata) {
     attachments.push(result);
   }
 
-  return result;
+  return attachments;
 }
 
 /**
