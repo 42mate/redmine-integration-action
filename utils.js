@@ -110,26 +110,20 @@ async function parsePercentageDone(prdata) {
   return 0;
 }
 
+
+// This could be a  nice to have
 async function parseAttachements(prdata) {
   // https://github.com/user-attachments/assets/c6a40c7d-ad2b-469e-8708-a949cb17985d
-
-  const regexp = new RegExp(".*github.com/user-attachments/assets/(\\w+)", "g");
+  const regexp = new RegExp("https?:\/\/github\.com\/user-attachments[^\)]+)", "g");
 
   let attachments = [];
   let result;
 
   while ((result = regexp.exec(prdata)) !== null) {
-    console.log("mirate aca");
-    attachments.push(result);
+    attachments.push(result[0]);
   }
 
   return attachments;
-}
-
-/**
- *
- */
-async function putObjects(prh) {
 }
 
 
