@@ -154,5 +154,5 @@ module.exports = {
   put,
   parseRedmineIssues,
   parsePercentageDone,
-  parseAttachements,
+  //parseAttachements,
 }
