@@ -13446,6 +13446,7 @@ async function run() {
         merged: merged,
         pr: pr,
         percentage: percentageDone,
+	apiKey: core.getInput("REDMINE_APIKEY"),
       });
       if (res.status != 204) {
         throw new Error(res.json());
