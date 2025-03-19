@@ -33,7 +33,7 @@ async function run() {
         percentage: percentageDone,
       });
       if (res.status != 204) {
-        throw new Error(res);
+        throw new Error(res.json());
       }
     }
   } catch (error) {
