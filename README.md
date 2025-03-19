@@ -8,6 +8,9 @@ We use GitHub Actions workflow for updating Redmine's `issue` resource with GitH
 It is required to add in the PR comment the Redmine explicit http link. 
 Example: `https://redmine.company.com/issues/id_of_issue`
 
+You can also add `PERCENTAGE_DONE=percentage` (10, 20, 30...)  
+This will trigger the update of the percentage on the redmine ticket.
+
 The code uses `actions/github` and `actions/core` to access PR context to grab necessary data to pass it through Redmine `issues` notes. 
 Also code listen for `opended`, `closed` or `reopended` status on your pull request.
 
