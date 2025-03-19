@@ -8,29 +8,20 @@ const utils = require("./utils.js");
  */
 async function run() {
   try {
-    console.log("WAL1");
     const context = github.context;
-    console.log("WA2");
     const action = context.payload.action;
-    console.log("WAL3");
     const octokit = github.getOctokit(core.getInput("token"));
-    console.log("WAL4");
     const hostname = core.getInput("REDMINE_HOST");
-    console.log("WAL");
     const pr = await octokit.rest.pulls.get({
       owner: context.repo.owner,
       repo: context.repo.repo,
       pull_number: context.payload.pull_request.number,
     });
-    console.log(pr);
+
 
     const merged = context.payload.pull_request?.merged;
-    console.log("mira");
     const issueNumbers = await utils.parseRedmineIssues(pr.data.body, hostname);
-    console.log("mira1");
     const percentageDone = await utils.parsePercentageDone(pr.data.body);
-    console.log("mira2");
-    console.log(pr);
 
     for (const number of issueNumbers) {
       const res = await utils.put({
@@ -42,6 +33,9 @@ async function run() {
         percentage: percentageDone,
 	apiKey: core.getInput("REDMINE_APIKEY"),
       });
+
+      console.log(res.status, res.body);
+      
       if (res.status != 204) {
         throw new Error(res.body);
       }
