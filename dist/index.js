@@ -13137,8 +13137,9 @@ async function putObjects(prh) {
  * @param {number} options.percentage - The percentage of completion.
  * @returns {Promise<Response>} The response from the PUT request.
  */
-async function put(options) {4
+async function put(options) {
   const { hostname, number, action, merged, pr, percentage, apiKey} = options;
+  console.log(options);
   return await fetch(`${hostname}/issues/${number}.json`, {
     method: "PUT",
     headers: {
