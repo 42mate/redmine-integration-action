@@ -13122,7 +13122,7 @@ async function parsePercentageDone(prdata) {
 async function parseAttachements(prdata) {
   // https://github.com/user-attachments/assets/c6a40c7d-ad2b-469e-8708-a949cb17985d
 
-  const regexp = new RegExp(".*github.com/user-attachments/assets/*", "g");
+  const regexp = new RegExp(".*github.com/user-attachments/assets/(\\w+)", "g");
 
   let attachments = [];
   let result;
