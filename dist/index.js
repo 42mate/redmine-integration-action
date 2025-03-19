@@ -13270,7 +13270,6 @@ const github = __nccwpck_require__(5438);
  * @returns {Object} The issue body containing PR notes and URL.
  */
 function newPRBody(pr) {
-  console.log(pr);
   return {
     issue: {
       notes: `*PR CREATED*: "${pr.data.title}":${pr.data.html_url} \n` + pr.data.body,

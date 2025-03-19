@@ -7,7 +7,6 @@ const github = require("@actions/github");
  * @returns {Object} The issue body containing PR notes and URL.
  */
 function newPRBody(pr) {
-  console.log(pr);
   return {
     issue: {
       notes: `*PR CREATED*: "${pr.data.title}":${pr.data.html_url} \n` + pr.data.body,
