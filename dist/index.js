@@ -13449,7 +13449,7 @@ async function run() {
 	apiKey: core.getInput("REDMINE_APIKEY"),
       });
       if (res.status != 204) {
-        throw new Error(res.json());
+        throw new Error(res.body);
       }
     }
   } catch (error) {
