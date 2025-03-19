@@ -13272,7 +13272,7 @@ const github = __nccwpck_require__(5438);
 function newPRBody(pr) {
   return {
     issue: {
-      notes: `*PR CREATED*: "${pr.data.title}":${pr.data.url} \n` + pr.data.body,
+      notes: `*PR CREATED*: "${pr.data.title}":${pr.data.html_url} \n` + pr.data.body,
     },
   };
 }
@@ -13285,7 +13285,7 @@ function newPRBody(pr) {
 function closePRBody(pr) {
   return {
     issue: {
-      notes: `PR CLOSED ${pr.url}`,
+      notes: `PR CLOSED ${pr.data.html_url}`,
     },
   };
 }
@@ -13298,7 +13298,7 @@ function closePRBody(pr) {
  */
 function mergePRBody(pr, percentage) {
   const body = {
-    notes: `PR MERGED ${pr.url}`,
+    notes: `PR MERGED ${pr.data.html_url}`,
     done_ratio: percentage,
   };
   if (percentage === 100) {
@@ -13408,6 +13408,7 @@ async function run() {
     const action = context.payload.action;
     const octokit = github.getOctokit(core.getInput("token"));
     const hostname = core.getInput("REDMINE_HOST");
+    
     const pr = await octokit.rest.pulls.get({
       owner: context.repo.owner,
       repo: context.repo.repo,
