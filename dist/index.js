@@ -13272,7 +13272,7 @@ const github = __nccwpck_require__(5438);
 function newPRBody(pr) {
   return {
     issue: {
-      notes: `*PR CREATED*: "${pr.data.title}":${pr.data.url} \n` + pr.data.body,
+      notes: `*PR CREATED*: "${pr.data.title}":${pr.url} \n` + pr.data.body,
     },
   };
 }
