@@ -10,7 +10,7 @@ function newPRBody(pr) {
   console.log("MIRA LAO PR", pr);
   return {
     issue: {
-      notes: `PR CREATED [${pr.data.title}](${pr.data.html_url}) \n ${pr.data.body}`,
+      notes: `PR CREATED ${pr.data.html_url} \n ${pr.data.body}`,
     },
   };
 }
