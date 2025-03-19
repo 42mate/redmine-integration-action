@@ -13423,15 +13423,21 @@ const utils = __nccwpck_require__(1252);
  */
 async function run() {
   try {
+    console.log("WAL1");
     const context = github.context;
+    console.log("WA2");
     const action = context.payload.action;
+    console.log("WAL3");
     const octokit = github.getOctokit(core.getInput("token"));
+    console.log("WAL4");
     const hostname = core.getInput("REDMINE_HOST");
+    console.log("WAL");
     const pr = await octokit.rest.pulls.get({
       owner: context.repo.owner,
       repo: context.repo.repo,
       pull_number: context.payload.pull_request.number,
     });
+    console.log(pr);
 
     const merged = context.payload.pull_request?.merged;
     const issueNumbers = await utils.parseRedmineIssues(pr.data.body, hostname);
