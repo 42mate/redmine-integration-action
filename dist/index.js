@@ -13120,19 +13120,19 @@ async function parsePercentageDone(prdata) {
 }
 
 // This could be a  nice to have
-async function parseAttachements(prdata) {
-  // https://github.com/user-attachments/assets/c6a40c7d-ad2b-469e-8708-a949cb17985d
-  const regexp = new RegExp("https?:\/\/github\.com\/user-attachments[^\)]+)", "g");
+// async function parseAttachements(prdata) {
+//   // https://github.com/user-attachments/assets/c6a40c7d-ad2b-469e-8708-a949cb17985d
+//   const regexp = new RegExp("https?:\/\/github\.com\/user-attachments[^\)]+)", "g");
 
-  let attachments = [];
-  let result;
+//   let attachments = [];
+//   let result;
 
-  while ((result = regexp.exec(prdata)) !== null) {
-    attachments.push(result[0]);
-  }
+//   while ((result = regexp.exec(prdata)) !== null) {
+//     attachments.push(result[0]);
+//   }
 
-  return attachments;
-}
+//   return attachments;
+//}
 
 /**
  * Sends a PUT request to update the issue in Redmine.
