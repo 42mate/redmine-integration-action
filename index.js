@@ -1,6 +1,6 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
-const utils = require("./utils.cjs");
+const utils = require("./utils.js");
 
 /**
  * Main function that executes the workflow of handling the PR action.
