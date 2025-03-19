@@ -13429,7 +13429,7 @@ async function run() {
         percentage: percentageDone,
       });
 
-      console.log("MIRA LAO", res.status, res.body);
+      console.log("MIRA LAO", res.status, await res.json());
       
       if (res.status != 204) {
         throw new Error(res);
