@@ -13440,12 +13440,12 @@ async function run() {
     const action = context.payload.action;
     const octokit = github.getOctokit(core.getInput("token"));
     const hostname = core.getInput("REDMINE_HOST");
+    const apiKey = core.getInput("REDMINE_APIKEY");
     const pr = await octokit.rest.pulls.get({
       owner: context.repo.owner,
       repo: context.repo.repo,
       pull_number: context.payload.pull_request.number,
     });
-
 
     const merged = context.payload.pull_request?.merged;
     const issueNumbers = await utils.parseRedmineIssues(pr.data.body, hostname);
@@ -13460,7 +13460,7 @@ async function run() {
         merged: merged,
         pr: pr,
         percentage: percentageDone,
-	apiKey: 'ec234c37b836236e0de1d91de607b301ed1eb370',
+	apiKey: apiKey,
       });
 
       console.log(res.status, res.body);
