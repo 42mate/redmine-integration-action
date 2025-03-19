@@ -13273,7 +13273,7 @@ function newPRBody(pr) {
   console.log(pr);
   return {
     issue: {
-      notes: `*PR CREATED*: "${pr.data.title}":${pr.url} \n` + pr.data.body,
+      notes: `*PR CREATED*: "${pr.data.title}":${pr.html_url} \n` + pr.data.body,
     },
   };
 }
@@ -13286,7 +13286,7 @@ function newPRBody(pr) {
 function closePRBody(pr) {
   return {
     issue: {
-      notes: `PR CLOSED ${pr.url}`,
+      notes: `PR CLOSED ${pr.html_url}`,
     },
   };
 }
@@ -13299,7 +13299,7 @@ function closePRBody(pr) {
  */
 function mergePRBody(pr, percentage) {
   const body = {
-    notes: `PR MERGED ${pr.url}`,
+    notes: `PR MERGED ${pr.html_url}`,
     done_ratio: percentage,
   };
   if (percentage === 100) {
