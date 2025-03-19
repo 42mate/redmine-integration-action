@@ -13431,7 +13431,7 @@ async function run() {
         percentage: percentageDone,
       });
 
-      console.log("MIRA LAO", res.status, await res.json());
+      console.log("MIRA LAO", res.status);
       
       if (res.status != 204) {
         throw new Error(res);
