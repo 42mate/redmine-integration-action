@@ -22,9 +22,7 @@ async function run() {
     const merged = context.payload.pull_request?.merged;
     const issueNumbers = await utils.parseRedmineIssues(pr.data.body, hostname);
     const percentageDone = await utils.parsePercentageDone(pr.data.body);
-    const att = await utils.parseAttachements(pr.data.body);
-
-    console.log(att);
+    //const att = await utils.parseAttachements(pr.data.body);
 
     for (const number of issueNumbers) {
       const res = await utils.put({

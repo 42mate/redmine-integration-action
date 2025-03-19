@@ -110,7 +110,6 @@ async function parsePercentageDone(prdata) {
   return 0;
 }
 
-
 // This could be a  nice to have
 async function parseAttachements(prdata) {
   // https://github.com/user-attachments/assets/c6a40c7d-ad2b-469e-8708-a949cb17985d
@@ -125,7 +124,6 @@ async function parseAttachements(prdata) {
 
   return attachments;
 }
-
 
 /**
  * Sends a PUT request to update the issue in Redmine.

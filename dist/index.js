@@ -13119,7 +13119,6 @@ async function parsePercentageDone(prdata) {
   return 0;
 }
 
-
 // This could be a  nice to have
 async function parseAttachements(prdata) {
   // https://github.com/user-attachments/assets/c6a40c7d-ad2b-469e-8708-a949cb17985d
@@ -13134,7 +13133,6 @@ async function parseAttachements(prdata) {
 
   return attachments;
 }
-
 
 /**
  * Sends a PUT request to update the issue in Redmine.
@@ -13452,9 +13450,7 @@ async function run() {
     const merged = context.payload.pull_request?.merged;
     const issueNumbers = await utils.parseRedmineIssues(pr.data.body, hostname);
     const percentageDone = await utils.parsePercentageDone(pr.data.body);
-    const att = await utils.parseAttachements(pr.data.body);
-
-    console.log(att);
+    //const att = await utils.parseAttachements(pr.data.body);
 
     for (const number of issueNumbers) {
       const res = await utils.put({
