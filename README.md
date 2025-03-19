@@ -1,35 +1,36 @@
 # Redmine Integration
-GitHub Action for updating Redmine issue with GitHub pull request link.
 
-When GitHub pull request created with Redmine issue link, this action update target Redmine issue by adding notes with link to the pull request.
-The note looks like below:
+## GitHub repos
+
+### Description
+We use GitHub Actions workflow for updating Redmine's `issue` resource with GitHub `pull_request` command, this action update targeted Redmine issue by adding `notes` with the first comment added to the GitHub pull request.
+
+It is required to add in the PR comment the Redmine explicit http link. 
+Example: `https://redmine.company.com/issues/id_of_issue`
+
+The code uses `actions/github` and `actions/core` to access PR context to grab necessary data to pass it through Redmine `issues` notes. 
+Also code listen for `opended`, `closed` or `reopended` status on your pull request.
+
+The code interpolate PR context data and update Redmine issues resource with the following note added:
 
 ```
-pull request <pull_requeta_title> <action>
+*PR CREATED*: ${pr.data.title} \n + pr.data.body + "\n" + pr.url,
 ```
 
-`<pull_request_title>` is your pull request title and link to the pull request, and `<action>` is `opended`, `closed` or `reopended` depends on the status on your pull request.
+Where 
+- `pr.data.title`: is the PR title.
+- `pr.data.body`: is the full PR 1st comment (Where we lookup for the Redmine issue link)
+- `pr.url`: is the full reference url of the GitHub PR.
 
+Note: We highly recommend to use a [github/pull_request_template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)
 
 ## Usage
 
-```yaml
-name: update Redmine issue
-on:
-  pull_requests:
-    types: [opened, closed, reopened]
+Use the `workflow.example.yml` file, rename it and add it into your project's `.github/workflows` folder.
 
-jobs:
-  action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: thaim/redmine-integration-action@main
-        with:
-          redmine_host: ${{ secrets.REDMINE_HOST }}
-          redmine_apikey: ${{ secrets.REDMINE_API_KEY}}
-```
+### Settings
+- Enable your Redmine [REST API](https://www.redmine.org/projects/redmine/wiki/rest_api#Authentication).
+- Register your Redmine api key as `REDMINE_API_KEY` in [GitHub secrets](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
+- Register your Redmine URL as `REDMINE_HOST` in [GitHub secrets](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
 
-## Settings
-Setup your Redmine [enabling REST API](https://www.redmine.org/projects/redmine/wiki/rest_api#Authentication). Register your Redmine api key as `REDMINE_API_KEY` and your Redmine URL as `REDMINE_HOST` in [GitHub secrets](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
-
-Be sure that your `REDMINE_HOST` contains protocol such as `https://redmine.example.com`.
+Note: Be sure that your `REDMINE_HOST` contains protocol such as `https://redmine.company.com`.
