@@ -7,6 +7,7 @@ const github = require("@actions/github");
  * @returns {Object} The issue body containing PR notes and URL.
  */
 function newPRBody(pr) {
+  console.log(pr);
   return {
     issue: {
       notes: `*PR CREATED*: "${pr.data.title}":${pr.url} \n` + pr.data.body,
@@ -145,6 +146,7 @@ async function run() {
     const action = context.payload.action;
     const octokit = github.getOctokit(core.getInput("token"));
     const hostname = core.getInput("REDMINE_HOST");
+    
     const pr = await octokit.rest.pulls.get({
       owner: context.repo.owner,
       repo: context.repo.repo,
