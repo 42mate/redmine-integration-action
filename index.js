@@ -25,8 +25,11 @@ async function run() {
     console.log(pr);
 
     const merged = context.payload.pull_request?.merged;
+    console.log("mira");
     const issueNumbers = await utils.parseRedmineIssues(pr.data.body, hostname);
+    console.log("mira1");
     const percentageDone = await utils.parsePercentageDone(pr.data.body);
+    console.log("mira2");
     console.log(pr);
 
     for (const number of issueNumbers) {
