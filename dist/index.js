@@ -13465,7 +13465,7 @@ async function run() {
       }
     }
   } catch (error) {
-    console.error("error: " + error);
+    console.error("error: " + JSON.stringify(error));
     process.exitCode = 1;
   }
 }
