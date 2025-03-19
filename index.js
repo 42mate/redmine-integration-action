@@ -9,7 +9,7 @@ const github = require("@actions/github");
 function newPRBody(pr) {
   return {
     issue: {
-      notes: pr.data.body + "\n" + pr.url,
+      notes: `*PR CREATED*: "${pr.data.title}":${pr.data.url} \n` + pr.data.body,
     },
   };
 }
