@@ -26,7 +26,7 @@ async function run() {
 
     for (const number of issueNumbers) {
       const res = await utils.put({
-        hostname: "https://redmine.42mate.com",
+        hostname: hostname,
         number: number,
         action: action,
         merged: merged,
