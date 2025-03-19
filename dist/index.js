@@ -13113,7 +13113,10 @@ async function parseRedmineIssues(prdata, redmine_host) {
 async function parsePercentageDone(prdata) {
   const regexp = new RegExp(".*PERCENTAGE_DONE=(\\d+).*", "g");
   const result = regexp.exec(prdata);
-  return parseInt(result[1]);
+  if (result) {
+    return parseInt(result[1]);
+  }
+  return 0;
 }
 
 /**
