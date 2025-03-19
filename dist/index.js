@@ -13147,7 +13147,6 @@ async function parsePercentageDone(prdata) {
  */
 async function put(options) {
   const { hostname, number, action, merged, pr, percentage, apiKey} = options;
-  console.log(options);
   return await fetch(`${hostname}/issues/${number}.json`, {
     method: "PUT",
     headers: {
