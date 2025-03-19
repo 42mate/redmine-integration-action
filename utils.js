@@ -110,6 +110,22 @@ async function parsePercentageDone(prdata) {
   return 0;
 }
 
+async function parseAttachements(prdata) {
+  // https://github.com/user-attachments/assets/c6a40c7d-ad2b-469e-8708-a949cb17985d
+
+  const regexp = new RegExp(".*github.com/user-attachments/assets/*")
+  const data = regexp.exec(prdata);
+
+  let attachments = [];
+  let result;
+
+  while ((result = regexp.exec(prdata)) !== null) {
+    attachments.push(result);
+  }
+
+  return result;
+}
+
 /**
  *
  */
@@ -146,4 +162,5 @@ module.exports = {
   put,
   parseRedmineIssues,
   parsePercentageDone,
+  parseAttachements,
 }
