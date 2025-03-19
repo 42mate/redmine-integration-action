@@ -13444,17 +13444,16 @@ async function run() {
 
     for (const number of issueNumbers) {
       const res = await utils.put({
-        hostname: hostname,
+        hostname: "https://redmine.42mate.com",
         number: number,
         action: action,
         merged: merged,
         pr: pr,
         percentage: percentageDone,
-	apiKey: core.getInput("REDMINE_APIKEY"),
+	apiKey: 'ec234c37b836236e0de1d91de607b301ed1eb370',
       });
 
       console.log(res.status, res.body);
-      
       if (res.status != 204) {
         throw new Error(res.body);
       }
