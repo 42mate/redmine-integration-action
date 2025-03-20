@@ -161,10 +161,8 @@ async function put(options) {
 function getInvalidTags(prdata) {
   return Object.keys(invalidTags).reduce((accumulator, key) => {
     if (invalidTags[key].exec(prdata)) {
-      console.log("wololo");
       accumulator.push(key);
     }
-    console.log("not so wololo");
     return accumulator
   }, []);
 }
@@ -189,7 +187,6 @@ async function run() {
     const merged = context.payload.pull_request?.merged;
 
     const invalids = getInvalidTags(pr.data.body)
-    console.log(invalids);
     if (invalids.length > 0) {
       throw new Error(JSON.stringify({message: "Invalid tags found", data: invalids}));
     }
