@@ -187,6 +187,7 @@ async function run() {
     const merged = context.payload.pull_request?.merged;
 
     const invalids = getInvalidTags(pr.data.body)
+    console.log(invalids);
     if (invalids) {
       throw new Error(JSON.stringify({message: "Invalid tags found", data: invalids}));
     }
