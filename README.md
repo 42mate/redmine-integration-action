@@ -37,3 +37,24 @@ Use the `workflow.example.yml` file, rename it and add it into your project's `.
 - Register your Redmine URL as `REDMINE_HOST` in [GitHub secrets](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
 
 Note: Be sure that your `REDMINE_HOST` contains protocol such as `https://redmine.company.com`.
+
+### How to test the integration with Redmine
+
+- Update the test.js
+- `npm i`
+- node test.js
+
+
+### To build
+
+```
+npm run build
+git add index.js dist
+git commit -m 'wathever'
+git push
+```
+
+### To test changes on the action:
+
+- Create a new branch
+- Update the action on the repository that's using it to use 42mate/redmine-integration-action@branch
