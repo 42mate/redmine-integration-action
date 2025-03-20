@@ -13280,9 +13280,10 @@ const invalidTags = {
  * @returns {Object} The issue body containing PR notes and URL.
  */
 function newPRBody(pr) {
+  console.log("MIRA LAO PR", pr);
   return {
     issue: {
-      notes: `PR CREATED [${pr.data.title}](${pr.data.html_url}) \n ${pr.data.body}`,
+      notes: `PR CREATED ${pr.data.html_url} \n ${pr.data.body}`,
     },
   };
 }
@@ -13398,6 +13399,7 @@ async function parsePercentageDone(prdata) {
  */
 async function put(options) {
   const { hostname, number, action, merged, pr, percentage } = options;
+  console.log("options: ", JSON.stringify(getBody(action, merged, pr, percentage)));
   return await fetch(`${hostname}/issues/${number}.json`, {
     method: "PUT",
     headers: {
