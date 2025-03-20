@@ -13265,6 +13265,16 @@ const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 
 /**
+ * An object containing invalid HTML tags and their associated regular expressions.
+ * In this example, it contains a regex to match `<img>` tags.
+ *
+ * @type {Object<string, RegExp>}
+ */
+const invalidTags = {
+  img: new RegExp('<img\\s+[^>]*src\\s*=\\s*["\'][^"\']*["\'][^>]*>', 'i'),
+};
+
+/**
  * Constructs the body of the new PR issue.
  * @param {Object} pr - The pull request data.
  * @returns {Object} The issue body containing PR notes and URL.
@@ -13401,6 +13411,28 @@ async function put(options) {
 }
 
 /**
+ * Checks the provided pull request data (`prdata`) for invalid HTML tags.
+ * An invalid tag is defined as a tag that matches a pattern from the `invalidTags` object.
+ * In this case, it checks for the presence of `<img>` tags.
+ *
+ * @param {string} prdata - The pull request data (usually the description or body of the PR) to scan for invalid HTML tags.
+ * @returns {string[]} An array of invalid tag names that were found in the `prdata`.
+ *
+ * @example
+ * const prDescription = "<div><img src='image.jpg'></div>";
+ * const invalidTags = getInvalidTags(prDescription);
+ * console.log(invalidTags); // Output: ["img"]
+ */
+function getInvalidTags(prdata) {
+  return Object.keys(invalidTags).reduce((accumulator, key) => {
+    if (invalidTags[key].exec(prdata)) {
+      accumulator.push(key);
+    }
+    return accumulator
+  }, []);
+}
+
+/**
  * Main function that executes the workflow of handling the PR action.
  * @returns {Promise<void>} A promise that resolves when the workflow completes.
  */
@@ -13410,7 +13442,7 @@ async function run() {
     const action = context.payload.action;
     const octokit = github.getOctokit(core.getInput("token"));
     const hostname = core.getInput("REDMINE_HOST");
-    
+
     const pr = await octokit.rest.pulls.get({
       owner: context.repo.owner,
       repo: context.repo.repo,
@@ -13418,6 +13450,12 @@ async function run() {
     });
 
     const merged = context.payload.pull_request?.merged;
+
+    const invalids = getInvalidTags(pr.data.body)
+    if (invalids.length > 0) {
+      throw new Error(JSON.stringify({message: "Invalid tags found", data: invalids}));
+    }
+
     const issueNumbers = await parseRedmineIssues(pr.data.body, hostname);
     const percentageDone = await parsePercentageDone(pr.data.body);
 
@@ -13431,8 +13469,6 @@ async function run() {
         percentage: percentageDone,
       });
 
-      console.log("MIRA LAO", res.status);
-      
       if (res.status != 204) {
         throw new Error(res);
       }
