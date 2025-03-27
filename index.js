@@ -8,7 +8,7 @@ const github = require("@actions/github");
  * @type {Object<string, RegExp>}
  */
 const invalidTags = {
-  img: new RegExp('<img\\s+[^>]*src\\s*=\\s*["\'][^"\']*["\'][^>]*>', 'i'),
+  img: new RegExp("<img\\s+[^>]*src\\s*=\\s*[\"'][^\"']*[\"'][^>]*>", "i"),
 };
 
 /**
@@ -17,7 +17,6 @@ const invalidTags = {
  * @returns {Object} The issue body containing PR notes and URL.
  */
 function newPRBody(pr) {
-  console.log("MIRA LAO PR", pr);
   return {
     issue: {
       notes: `PR CREATED ${pr.data.html_url} \n ${pr.data.body}`,
@@ -33,7 +32,7 @@ function newPRBody(pr) {
 function closePRBody(pr) {
   return {
     issue: {
-      notes: `PR CLOSED [${pr.data.title}](${pr.data.html_url})`
+      notes: `PR CLOSED [${pr.data.title}](${pr.data.html_url})`,
     },
   };
 }
@@ -117,10 +116,9 @@ async function parsePercentageDone(prdata) {
   const regexp = new RegExp(".*PERCENTAGE_DONE=(\\d+).*", "g");
   const result = regexp.exec(prdata);
   if (result) {
-      return parseInt(result[1]);
+    return parseInt(result[1]);
   }
-  return 0
-
+  return 0;
 }
 
 /**
@@ -136,7 +134,6 @@ async function parsePercentageDone(prdata) {
  */
 async function put(options) {
   const { hostname, number, action, merged, pr, percentage } = options;
-  console.log("options: ", JSON.stringify(getBody(action, merged, pr, percentage)));
   return await fetch(`${hostname}/issues/${number}.json`, {
     method: "PUT",
     headers: {
@@ -165,7 +162,7 @@ function getInvalidTags(prdata) {
     if (invalidTags[key].exec(prdata)) {
       accumulator.push(key);
     }
-    return accumulator
+    return accumulator;
   }, []);
 }
 
@@ -188,9 +185,11 @@ async function run() {
 
     const merged = context.payload.pull_request?.merged;
 
-    const invalids = getInvalidTags(pr.data.body)
+    const invalids = getInvalidTags(pr.data.body);
     if (invalids.length > 0) {
-      throw new Error(JSON.stringify({message: "Invalid tags found", data: invalids}));
+      throw new Error(
+        JSON.stringify({ message: "Invalid tags found", data: invalids }),
+      );
     }
 
     const issueNumbers = await parseRedmineIssues(pr.data.body, hostname);
@@ -211,7 +210,7 @@ async function run() {
       }
     }
   } catch (error) {
-    console.error("error: " + error);
+    console.error("error: " + JSON.stringify(error));
     process.exitCode = 1;
   }
 }
