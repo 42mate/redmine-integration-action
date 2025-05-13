@@ -1,3 +1,8 @@
+# This is an example of a real workflow on WARC project.
+#
+# In order to apply this, you need to add the following file into
+# .github/workflows folder and add the secret to your repo: REDMINE_HOST, REDMINE_API_KEY.
+
 name: Update Redmine Issue
 on:
   pull_request:
