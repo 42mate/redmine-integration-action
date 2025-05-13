@@ -27,9 +27,10 @@ Where
 
 Note: We highly recommend to use a [github/pull_request_template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)
 
-## Usage
+## Usage / Install
 
-Use the `workflow.example.yml` file, rename it and add it into your project's `.github/workflows` folder.
+- Use the example files on .github/worflow folder, rename the file/s and add it into your project's `.github/workflows` folder.
+- Add the proper permission on your github repository under `Settings->Actions->General->ActionsPermissions->Allow all actions and reusable workflows`
 
 ### Settings
 - Enable your Redmine [REST API](https://www.redmine.org/projects/redmine/wiki/rest_api#Authentication).
